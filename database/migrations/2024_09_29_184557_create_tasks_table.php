@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Enums\TaskType;
 
 return new class extends Migration
 {
@@ -13,11 +14,15 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('attached_to')->nullable();
+            $table->foreign('attached_to')->references('id')->on('tasks');
             $table->string('title');
             $table->string('description')->nullable();
-            $table->string('status')->nullable();
-            //$table->string('owner_id')->->nullable();
+            $table->string('status')->nullable()->default('to-do');
+            $table->unsignedBigInteger('owner_id');
+            $table->string('type')->default('main');
             $table->timestamps();
+            $table->foreign('owner_id')->references('id')->on('users');
         });
     }
 
