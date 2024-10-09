@@ -9,6 +9,7 @@ use Validator;
 use App\Models\User;
 use App\Services\UserService;
 use OpenApi\Attributes as OA;
+use App\Http\Requests\StoreUserRequest;
 
 class AuthController extends Controller
 {
@@ -18,15 +19,10 @@ class AuthController extends Controller
     }
 
 
-    public function register(Request $request)
+    public function register(StoreUserRequest $request)
     {
 
-        $validator = Validator::make($request->all(),[
-            'firstName' => 'required|string|max:255',
-            'lastName' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:3'
-        ]);
+        $validator = $request->validated();
 
         if($validator->fails()){
             return response()->json($validator->errors());

@@ -19,9 +19,9 @@ Route::prefix('tasks')->controller(TaskController::class)->group(function() {
 Route::prefix('users')->controller(UserController::class)->group(function() {
     Route::get('/index', 'index')->name('users.index');
     Route::get('/search', 'search')->name('users.search');
-});
+})->middleware('auth:sanctum');
 
-Route::controller(AuthController::class)->group(function () {
-    Route::post('/register', 'register');
-    Route::post('/login', 'login');
+Route::prefix('auth')->controller(AuthController::class)->group(function () {
+    Route::post('/register', 'register')->name('auth.register');
+    Route::post('/login', 'login')->name('auth.login');
 });
