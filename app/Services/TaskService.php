@@ -16,11 +16,12 @@ class TaskService
     //create task, subtask & affect dependencies
     public function store(Request $request){
         //need to create validator class
+        try {
         // we need to create a transaction
-        $delay = now()->addMinutes(10);
+
         // we create the main task
         $mainTasks= $this->createTask($request,null,'main');
-        //$this->notifyUser($request->ownerId,$mainTasks);
+        $this->notifyUser($request->ownerId,$mainTasks);
 
         //Check subTask & create subTask
         if ($request->has('subtasks')) {
@@ -41,7 +42,11 @@ class TaskService
 
             }
         }
-            return response()->json($mainTasks);
+        return response()->json($mainTasks);
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 
     // create a single Task
@@ -56,14 +61,16 @@ class TaskService
     }
 
     //find a user and notify him
-    public function notifyUser(int $id,$task){
+    public function notifyUser(int $id,$task,$mailDelay =1 , $smsDelay=5){
         // find user by Id
         $user = User::where('id',$id)
                 ->select('email')
                 ->first();
         // send mail to the assigned user
         // we need to put the mail in queue to increase performance
-        $user->notify(new TaskNotification($task));
+        //$user->notify((new TaskNotification($task))->delay($mailDelay));
+        $user->notify((new TaskNotification($task)));
+
 
     }
 
@@ -95,7 +102,6 @@ class TaskService
     //get task with specific format
     public function displayTask(int $id){
         $tasks = $this->taskById($id);
-
         $mainTask = null;
         $subtasks = [];
         $dependencies =[];
@@ -115,7 +121,6 @@ class TaskService
             }
         }
 
-        // Structurer la réponse JSON avec la tâche principale et les sous-tâches
         $taskFormatted = [
             'title' => $mainTask->title,
             'description' => $mainTask->description,
@@ -146,6 +151,7 @@ class TaskService
     public function taskById(int $id){
         return Task::where("id",$id)
         ->orWhere("attached_to",$id)
+        ->with('owner')
         ->get();
     }
 

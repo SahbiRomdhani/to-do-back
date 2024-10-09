@@ -9,8 +9,10 @@ use Illuminate\Notifications\Messages\VonageMessage;
 use Illuminate\Notifications\Notification;
 use App\Models\Task;
 
-class TaskNotification extends Notification
+
+class TaskNotification extends Notification implements ShouldQueue
 {
+
     use Queueable;
 
     public $task;
@@ -20,6 +22,7 @@ class TaskNotification extends Notification
     public function __construct(Task $task)
     {
         $this->task = $task;
+        $this->onConnection('redis');
 
     }
 
@@ -31,7 +34,7 @@ class TaskNotification extends Notification
     public function via(object $notifiable): array
     {
         //return ['mail', 'vonage'];
-        return ['mail'];
+        return ['mail',];
     }
 
     /**
@@ -39,18 +42,17 @@ class TaskNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)
+        $url = url('/tasks/show/'.$this->task->id); // put front-end url
+
+    return (new MailMessage)
+                ->greeting('Hello!')
                 ->subject('Task Reminder')
                 ->line('Your task "'.$this->task->title.'" is due.')
-                ->line('Due Date: '.$this->task->due_date);
+                ->line('Due Date: '.$this->task->created_at)
+                ->action('View Task', $url)
+                ->line('Thank you for using our application!');
     }
 
-    public function toVonage(object $notifiable): VonageMessage
-    {
-        return (new VonageMessage)
-                ->clientReference((string) $notifiable->id)
-                ->content('Your task "'.$this->task->title.'" is due.');
-    }
 
     /**
      * Get the array representation of the notification.

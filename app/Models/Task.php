@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Enums\TaskType;
+use App\Models\User;
 
 class Task extends Model
 {
@@ -19,8 +20,8 @@ class Task extends Model
   /**
     * Get the User that owns the Task.
    */
-   public function owner(): BelongsTo
+   public function owner()
    {
-       return $this->belongsTo(User::class);
+       return $this->belongsTo(User::class,'owner_id');
    }
 }

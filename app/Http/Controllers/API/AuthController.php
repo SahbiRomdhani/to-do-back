@@ -22,11 +22,7 @@ class AuthController extends Controller
     public function register(StoreUserRequest $request)
     {
 
-        $validator = $request->validated();
-
-        if($validator->fails()){
-            return response()->json($validator->errors());
-        }
+        $request->validated();
 
         return $this->userService->create($request);
 
