@@ -22,17 +22,18 @@ Make sure you have the following installed on your machine:
 
 Clone the repository:
 
-    - git clone https://github.com/your-username/your-repo-name.git
+    git clone https://github.com/your-username/your-repo-name.git
 
 Navigate to the project directory:
 
-    - cd your-repo-name
+    cd your-repo-name
 
 Install PHP dependencies:
 
-    - composer install
-    - Set up your .env file:
-    - Duplicate the .env.example file and rename it to .env
+    composer install
+
+Set up your .env file:
+Duplicate the .env.example file and rename it to .env
 
 Update the PostgreSQL database configuration and Redis settings as needed. For example:
 
