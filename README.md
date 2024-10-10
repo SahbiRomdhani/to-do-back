@@ -20,15 +20,17 @@ Make sure you have the following installed on your machine:
     Postman (for API testing)
     Installation Steps
 
-    Clone the repository:
+Clone the repository:
+
     - git clone https://github.com/your-username/your-repo-name.git
 
-    Navigate to the project directory:
+Navigate to the project directory:
+
     - cd your-repo-name
 
-    Install PHP dependencies:
-    - composer install
+Install PHP dependencies:
 
+    - composer install
     - Set up your .env file:
     - Duplicate the .env.example file and rename it to .env
 
@@ -49,22 +51,16 @@ Update the PostgreSQL database configuration and Redis settings as needed. For e
     REDIS_PASSWORD=null
     REDIS_PORT=6379
 
+Migrate the database:
 
-    Migrate the database:
-
-    bash
-    Copy code
     php artisan migrate
-    Seed the database:
 
-    bash
-    Copy code
+Seed the database:
+
     php artisan db:seed
 
-    Start the development server:
+Start the development server:
 
-    bash
-    Copy code
     php artisan serve
 
 ## License
