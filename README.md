@@ -7,67 +7,65 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-##Getting Started
-##Prerequisites
+## Getting Started
+
+## Prerequisites
+
 Make sure you have the following installed on your machine:
 
-PHP >= 8.x
-Composer
-PostgreSQL
-Redis
-Postman (for API testing)
-Installation Steps
-Clone the repository:
+    PHP >= 8.x
+    Composer
+    PostgreSQL
+    Redis
+    Postman (for API testing)
+    Installation Steps
 
-bash
-Copy code
-git clone https://github.com/SahbiRomdhani/to-do-back
-Navigate to the project directory:
+    Clone the repository:
+    - git clone https://github.com/your-username/your-repo-name.git
 
-bash
-Copy code
-cd to-do-back
-Install PHP dependencies:
+    Navigate to the project directory:
+    - cd your-repo-name
 
-bash
-Copy code
-composer install
-Set up your .env file:
+    Install PHP dependencies:
+    - composer install
 
-Duplicate the .env.example file and rename it to .env
+    - Set up your .env file:
+    - Duplicate the .env.example file and rename it to .env
 
 Update the PostgreSQL database configuration and Redis settings as needed. For example:
 
-dotenv
-Copy code
-DB_CONNECTION=pgsql
-DB_HOST=127.0.0.1
-DB_PORT=5432
-DB_DATABASE=your_database_name
-DB_USERNAME=your_username
-DB_PASSWORD=your_password
+    dotenv
 
-CACHE_DRIVER=redis
-QUEUE_CONNECTION=redis
-REDIS_HOST=127.0.0.1
-REDIS_PASSWORD=null
-REDIS_PORT=6379
+    DB_CONNECTION=pgsql
+    DB_HOST=127.0.0.1
+    DB_PORT=5432
+    DB_DATABASE=your_database_name
+    DB_USERNAME=your_username
+    DB_PASSWORD=your_password
 
-Migrate the database:
+    CACHE_DRIVER=redis
+    QUEUE_CONNECTION=redis
+    REDIS_HOST=127.0.0.1
+    REDIS_PASSWORD=null
+    REDIS_PORT=6379
 
-bash
-Copy code
-php artisan migrate
-Seed the database:
 
-bash
-Copy code
-php artisan db:seed
-Start the development server:
+    Migrate the database:
 
-bash
-Copy code
-php artisan serve
+    bash
+    Copy code
+    php artisan migrate
+    Seed the database:
+
+    bash
+    Copy code
+    php artisan db:seed
+
+    Start the development server:
+
+    bash
+    Copy code
+    php artisan serve
 
 ## License
 
