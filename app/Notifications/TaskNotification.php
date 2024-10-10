@@ -19,7 +19,7 @@ class TaskNotification extends Notification implements ShouldQueue
     /**
      * Create a new message instance.
      */
-    public function __construct(Task $task)
+    public function __construct($task)
     {
         $this->task = $task;
         $this->onConnection('redis');

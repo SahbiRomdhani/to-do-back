@@ -30,4 +30,12 @@ class TaskController extends Controller
     public function show($id){
         return $this->taskService->displayTask($id);
     }
+
+    public function updateStatus(Request $request){
+        $authId = $request->user()->id;
+        $id = $request->id;
+        $status = $request->status;
+
+        return $this->taskService->updateTaskStatus($id,$status,$authId);
+    }
 }

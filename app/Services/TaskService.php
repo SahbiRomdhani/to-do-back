@@ -9,6 +9,7 @@ use App\Models\Task;
 
 use  App\Notifications\TaskNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 
 class TaskService
@@ -18,11 +19,11 @@ class TaskService
         //need to create validator class
         try {
         // we need to create a transaction
+        DB::beginTransaction(); // <= Starting the transaction
 
         // we create the main task
         $mainTasks= $this->createTask($request,null,'main');
         $this->notifyUser($request->ownerId,$mainTasks);
-
         //Check subTask & create subTask
         if ($request->has('subtasks')) {
             foreach ($request->subtasks as $subtaskValue) {
@@ -42,22 +43,29 @@ class TaskService
 
             }
         }
+        DB::commit(); // <= Commit the changes
+
         return response()->json($mainTasks);
 
         } catch (\Throwable $th) {
+            DB::rollBack(); // <= Rollback in case of an exception
             throw $th;
         }
     }
 
     // create a single Task
     public function createTask($request, $taskId, String $type ){
-        return Task::create([
+         $taskId =DB::table('tasks')->insertGetId([
             "title"=>$request['title'],
             "description"=>$request['description'],
             "owner_id"=>$request['ownerId'],
             "attached_to"=>$taskId,
-            "type"=> $type
+            "type"=> $type,
+            "created_at"=> now(),
+            "updated_at"=> now()
         ]);
+        $task=DB::select('select * from tasks where id = ?', [$taskId]);
+        return $task[0];
     }
 
     //find a user and notify him
@@ -120,7 +128,6 @@ class TaskService
                 $dependencies[] = $this->formationTask($task);
             }
         }
-
         $taskFormatted = [
             'title' => $mainTask->title,
             'description' => $mainTask->description,
@@ -153,6 +160,33 @@ class TaskService
         ->orWhere("attached_to",$id)
         ->with('owner')
         ->get();
+    }
+
+    //check if Task has dependency Task with Status <> from completed
+    public function dependencyTask(int $id){
+        return Task::where('type','dependency')
+        ->where('attached_to',$id)
+        ->where('status','<>','completed')
+        ->count();
+    }
+
+    //update task status
+    public function updateTaskStatus(int $id , $status,int $authId){
+        // check if $id is the same as owner_id
+        Task::where('id',$id)
+        ->where('owner_id',$authId)
+        ->firstOrFail();
+
+        // check if the task has dependency and it status is completed or not
+        $countDependencyTask =$this->dependencyTask($id);
+        if($countDependencyTask > 0){
+            return response()->json("task has Dependency", 403);
+        }
+        Task::where('id',$id)
+        ->update([
+            'status'=>$status
+        ]);
+         return response()->json("task has been modified with success ", 200);
     }
 
 }

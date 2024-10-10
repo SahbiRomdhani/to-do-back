@@ -16,6 +16,7 @@ Route::prefix('tasks')->controller(TaskController::class)->group(function() {
     Route::post('/store', 'store')->name('tasks.create');
     Route::get('/index', 'index')->name('tasks.index');
     Route::get('/show/{id}', 'show')->name('tasks.show');
+    Route::patch('/status', 'updateStatus')->name('tasks.updateStatus');
 })->middleware(AUTH_SANCTUM);
 
 Route::prefix('users')->controller(UserController::class)->group(function() {
