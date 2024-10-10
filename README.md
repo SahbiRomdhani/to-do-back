@@ -22,11 +22,11 @@ Make sure you have the following installed on your machine:
 
 Clone the repository:
 
-    git clone https://github.com/your-username/your-repo-name.git
+    git clone https://github.com/SahbiRomdhani/to-do-back
 
 Navigate to the project directory:
 
-    cd your-repo-name
+    cd to-do-back
 
 Install PHP dependencies:
 
