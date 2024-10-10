@@ -27,8 +27,8 @@ class TaskService
         //Check subTask & create subTask
         if ($request->has('subtasks')) {
             foreach ($request->subtasks as $subtaskValue) {
-                $this->createTask($subtaskValue,$mainTasks->id,"subtask");
-                //$this->notifyUser($subtaskValue->ownerId,$mainTasks);
+                $newSubTask=$this->createTask($subtaskValue,$mainTasks->id,"subtask");
+                $this->notifyUser($subtaskValue['ownerId'],$newSubTask);
             }
         }
             //Check & update dependencies
@@ -158,7 +158,6 @@ class TaskService
     public function taskById(int $id){
         return Task::where("id",$id)
         ->orWhere("attached_to",$id)
-        ->with('owner')
         ->get();
     }
 

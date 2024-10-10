@@ -13,6 +13,7 @@ class Task extends Model
     protected $fillable = [
         "title", "description", "status","owner_id","attached_to","type",
    ];
+   protected $with = ['owner_id'];
 
    protected $cast= ['type'=> TaskType::class,];
 
@@ -20,8 +21,9 @@ class Task extends Model
   /**
     * Get the User that owns the Task.
    */
-   public function owner()
+   public function owner_id()
    {
        return $this->belongsTo(User::class,'owner_id');
    }
+
 }
